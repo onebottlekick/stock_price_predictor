@@ -4,6 +4,9 @@ from torch import nn
 from typing import List, Tuple
 
 
+device = 'cuda' if torch.cuda.is_available() else 'cpu'
+
+
 def train(model, train_data: Tuple[torch.Tensor, torch.Tensor], val_data: Tuple[torch.Tensor, torch.Tensor], **kwargs) -> Tuple[List, List]:
     '''
     model train function
@@ -20,10 +23,10 @@ def train(model, train_data: Tuple[torch.Tensor, torch.Tensor], val_data: Tuple[
     Example:
         >>> train_loss_list, val_loss_list = train(model, (X_train, y_train), (X_test, y_test), epochs=200, learning_rate=0.01)
     '''
-    device = 'cuda' if torch.cuda.is_available() else 'cpu'
+    model = model.to(device)
     
     criterion = nn.MSELoss().to(device)
-    optimizer = torch.optim.Adam(model.parameters(), lr=kwargs['learning_rate']).to(device)
+    optimizer = torch.optim.Adam(model.parameters(), lr=kwargs['learning_rate'])
     
     train_loss_list = []
     val_loss_list = []
@@ -63,8 +66,8 @@ class LSTM(nn.Module):
         self.fc = nn.Linear(hidden_dim, output_dim)
         
     def forward(self, x):
-        h0 = torch.zeros(self.num_layers, x.size(0), self.hidden_dim, requires_grad=True)
-        c0 = torch.zeros(self.num_layers, x.size(0), self.hidden_dim, requires_grad=True)
+        h0 = torch.zeros(self.num_layers, x.size(0), self.hidden_dim, requires_grad=True, device=device)
+        c0 = torch.zeros(self.num_layers, x.size(0), self.hidden_dim, requires_grad=True, device=device)
         out, (hn, cn) = self.lstm(x, (h0.detach(), c0.detach()))
         out = self.fc(out)
         return out
@@ -81,7 +84,7 @@ class GRU(nn.Module):
         self.fc = nn.Linear(hidden_dim, output_dim)
 
     def forward(self, x):
-        h0 = torch.zeros(self.num_layers, x.size(0), self.hidden_dim, requires_grad=True)
+        h0 = torch.zeros(self.num_layers, x.size(0), self.hidden_dim, requires_grad=True, device=device)
         out, (hn) = self.gru(x, (h0.detach()))
         out = self.fc(out) 
         return out
