@@ -30,7 +30,7 @@
    <widget class="QLabel" name="label_2">
     <property name="geometry">
      <rect>
-      <x>600</x>
+      <x>590</x>
       <y>40</y>
       <width>71</width>
       <height>16</height>
@@ -50,13 +50,13 @@
      </rect>
     </property>
     <property name="echoMode">
-     <enum>QLineEdit::Password</enum>
+     <enum>QLineEdit::Normal</enum>
     </property>
    </widget>
    <widget class="QPushButton" name="train_button">
     <property name="geometry">
      <rect>
-      <x>760</x>
+      <x>780</x>
       <y>40</y>
       <width>71</width>
       <height>51</height>
@@ -305,7 +305,7 @@
    <widget class="QLabel" name="label_11">
     <property name="geometry">
      <rect>
-      <x>530</x>
+      <x>520</x>
       <y>70</y>
       <width>48</width>
       <height>16</height>
@@ -324,6 +324,12 @@
       <height>22</height>
      </rect>
     </property>
+    <property name="minimum">
+     <number>1</number>
+    </property>
+    <property name="maximum">
+     <number>9999</number>
+    </property>
    </widget>
    <widget class="QLabel" name="label_12">
     <property name="geometry">
@@ -341,11 +347,17 @@
    <widget class="QDoubleSpinBox" name="learning_rate">
     <property name="geometry">
      <rect>
-      <x>690</x>
+      <x>700</x>
       <y>70</y>
-      <width>62</width>
+      <width>81</width>
       <height>22</height>
      </rect>
+    </property>
+    <property name="decimals">
+     <number>6</number>
+    </property>
+    <property name="singleStep">
+     <double>0.010000000000000</double>
     </property>
    </widget>
    <widget class="QLabel" name="label_13">
@@ -409,6 +421,12 @@
       <height>22</height>
      </rect>
     </property>
+    <property name="minimum">
+     <number>1</number>
+    </property>
+    <property name="maximum">
+     <number>9999</number>
+    </property>
    </widget>
    <widget class="QSpinBox" name="output_dim">
     <property name="geometry">
@@ -418,6 +436,12 @@
       <width>42</width>
       <height>22</height>
      </rect>
+    </property>
+    <property name="minimum">
+     <number>1</number>
+    </property>
+    <property name="maximum">
+     <number>6</number>
     </property>
    </widget>
    <widget class="QSpinBox" name="hidden_dim">
@@ -429,6 +453,12 @@
       <height>22</height>
      </rect>
     </property>
+    <property name="minimum">
+     <number>1</number>
+    </property>
+    <property name="maximum">
+     <number>9999</number>
+    </property>
    </widget>
    <widget class="QSpinBox" name="num_layers">
     <property name="geometry">
@@ -438,6 +468,12 @@
       <width>42</width>
       <height>22</height>
      </rect>
+    </property>
+    <property name="minimum">
+     <number>1</number>
+    </property>
+    <property name="maximum">
+     <number>9999</number>
     </property>
    </widget>
   </widget>
