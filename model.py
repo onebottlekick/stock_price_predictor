@@ -1,10 +1,10 @@
 import torch
 from torch import nn
 
-from typing import Tuple
+from typing import List, Tuple
 
 
-def train(model, train_data: Tuple[torch.Tensor, torch.Tensor], val_data: Tuple[torch.Tensor, torch.Tensor], **kwargs):
+def train(model, train_data: Tuple[torch.Tensor, torch.Tensor], val_data: Tuple[torch.Tensor, torch.Tensor], **kwargs) -> Tuple[List, List]:
     '''
     model train function
     
@@ -14,12 +14,19 @@ def train(model, train_data: Tuple[torch.Tensor, torch.Tensor], val_data: Tuple[
         val_data: X_test, y_test
         kwargs:
             epochs: train epochs
-            learning_rate: optimizer learning rate
-        Example:
-            >>> train(model, (X_train, y_train), (X_test, y_test), epochs=200, learning_rate=0.01)
+            learning_rate: optimizer learning rate 
+    Return:
+        train_loss_list, val_loss_list
+    Example:
+        >>> train_loss_list, val_loss_list = train(model, (X_train, y_train), (X_test, y_test), epochs=200, learning_rate=0.01)
     '''
-    criterion = nn.MSELoss()
-    optimizer = torch.optim.Adam(model.parameters(), lr=kwargs['learning_rate'])
+    device = 'cuda' if torch.cuda.is_available() else 'cpu'
+    
+    criterion = nn.MSELoss().to(device)
+    optimizer = torch.optim.Adam(model.parameters(), lr=kwargs['learning_rate']).to(device)
+    
+    train_loss_list = []
+    val_loss_list = []
     
     for epoch in range(1, kwargs['epochs']+1):
         model.train()
@@ -27,9 +34,10 @@ def train(model, train_data: Tuple[torch.Tensor, torch.Tensor], val_data: Tuple[
         outputs = model(data)
         optimizer.zero_grad()
         loss = criterion(outputs, target)
+        train_loss_list.append(loss.item())
+        print(f'Epoch: {epoch:3d}, train_loss={loss.item():.4f},', end=' ')
         loss.backward()
         optimizer.step()
-        print(f'Epoch: {epoch:3d}, train_loss={loss.item():.4f},', end=' ')
         
         
         model.eval()
@@ -37,7 +45,10 @@ def train(model, train_data: Tuple[torch.Tensor, torch.Tensor], val_data: Tuple[
             data, target = val_data
             outputs = model(data)
             val_loss = criterion(outputs, target).item()
+        val_loss_list.append(val_loss)
         print(f'val_loss={val_loss:.4f}')
+
+    return train_loss_list, val_loss_list
 
 
 
