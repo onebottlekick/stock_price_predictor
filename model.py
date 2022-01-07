@@ -1,8 +1,23 @@
 import torch
 from torch import nn
 
+from typing import Tuple
 
-def train(model, train_data, val_data, **kwargs):
+
+def train(model, train_data: Tuple[torch.Tensor, torch.Tensor], val_data: Tuple[torch.Tensor, torch.Tensor], **kwargs):
+    '''
+    model train function
+    
+    Args:
+        model: pytorch model
+        train_data: X_train, y_train
+        val_data: X_test, y_test
+        kwargs:
+            epochs: train epochs
+            learning_rate: optimizer learning rate
+        Example:
+            >>> train(model, (X_train, y_train), (X_test, y_test), epochs=200, learning_rate=0.01)
+    '''
     criterion = nn.MSELoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=kwargs['learning_rate'])
     
