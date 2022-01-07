@@ -38,7 +38,7 @@ class StockDataset:
             start: from
             end: to
         Return:
-            stock price data: pandas DataFrame
+            stock price data: pandas DataFrame (columns=['High', 'Low', 'Open', 'Close', 'Volume', 'Adj Close'])
         Example:
             >>> data = load_data('AAPL', (2012, 1, 1), (2021, 1, 1))
         '''
